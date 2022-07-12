@@ -8,3 +8,55 @@
     width: 200px;
   }
 }
+
+.questions {
+  border: 2px solid white;
+  padding: 20px 30px;
+  border-radius: 10px;
+
+  .questions__item {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 20px;
+
+    .questions__topic {
+      //flex: 2;
+      width: 100%;
+      padding: 15px 0;
+      border: 2px solid white;
+      text-align: center;
+      //font-weight: bold;
+      border-radius: 10px;
+      color: white;
+      font-size: 20px;
+    }
+
+    .questions__ball {
+      width: 100%;
+      background-color: white;
+      padding: 15px 0;
+      color: black;
+      text-align: center;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  }
+}
+
+.count {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+
+  .count__value {
+    color: white;
+    font-size: 24px;
+  }
+
+  button {
+    width: 200px;
+  }
+}

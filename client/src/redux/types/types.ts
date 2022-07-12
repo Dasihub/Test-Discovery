@@ -1,6 +1,6 @@
 import { GET_CLUES } from './enum';
 
-export interface IStateClues {
+export interface IResClues {
     id: number;
     answer: string;
     question: string;
@@ -20,7 +20,16 @@ export interface IStateClues {
     };
 }
 
-export interface IDispatchGetClues {
+export interface IStateClues {
+    inventions: IResClues[];
+    ac_dc: IResClues[];
+    state: IResClues[];
+    worlds: IResClues[];
+    hard: IResClues[];
+    loader?: boolean;
+}
+
+export interface IDispatchGetClues extends IStateClues {
     type: GET_CLUES.CLUES | GET_CLUES.LOADER_FALSE | GET_CLUES.LOADER_TRUE;
-    clues: IStateClues[];
+    // clues: IResClues[];
 }

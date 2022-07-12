@@ -11,6 +11,8 @@ const Navbar: React.FC = () => {
                 </div>
                 <div>Своя игра</div>
             </div>
+            <div>Играть</div>
+            <div>Результаты</div>
             <div className="navbar__user">Дастан</div>
         </div>
     );
