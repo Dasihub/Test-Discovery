@@ -24,7 +24,7 @@ const Question: React.FC<IProps> = ({ questionAnswers, ball, isAnswer }) => {
 
     return (
         <>
-            <div className="question">{questionAnswers.question}</div>
+            <div className="question">{questionAnswers.question}?</div>
             <div className="title__info">
                 Вопрос на {questionAnswers.ball}, Вы должны ответить на этот вопрос в течение 60 секунд!{' '}
                 <Timer isAnswer={isAnswer} />

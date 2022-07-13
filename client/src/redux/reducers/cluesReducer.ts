@@ -1,5 +1,5 @@
-import { GET_CLUES } from '../types/enum';
-import { IDispatchGetClues, IStateClues } from '../types/types';
+import { ANSWER, GET_CLUES } from '../types/enum';
+import { IDispatchAnswer, IDispatchGetClues, IStateClues } from '../types/types';
 
 const initialState: IStateClues = {
     loader: false,
@@ -10,7 +10,7 @@ const initialState: IStateClues = {
     hardTopic: [],
 };
 
-export const cluesReducer = (state = initialState, action: IDispatchGetClues) => {
+export const cluesReducer = (state = initialState, action: IDispatchGetClues | IDispatchAnswer) => {
     switch (action.type) {
         case GET_CLUES.LOADER_TRUE:
             return { ...state, loader: true };
@@ -25,6 +25,25 @@ export const cluesReducer = (state = initialState, action: IDispatchGetClues) =>
             };
         case GET_CLUES.LOADER_FALSE:
             return { ...state, loader: false };
+        case ANSWER.ANSWER:
+            return {
+                ...state,
+                stateTopic: state.stateTopic.map((item) =>
+                    item.id === action.id ? { ...item, isAnswer: action.title } : item,
+                ),
+                inventionsTopic: state.inventionsTopic.map((item) =>
+                    item.id === action.id ? { ...item, isAnswer: action.title } : item,
+                ),
+                ac_dcTopic: state.ac_dcTopic.map((item) =>
+                    item.id === action.id ? { ...item, isAnswer: action.title } : item,
+                ),
+                worldsTopic: state.worldsTopic.map((item) =>
+                    item.id === action.id ? { ...item, isAnswer: action.title } : item,
+                ),
+                hardTopic: state.hardTopic.map((item) =>
+                    item.id === action.id ? { ...item, isAnswer: action.title } : item,
+                ),
+            };
         default:
             return state;
     }

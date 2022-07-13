@@ -1,4 +1,4 @@
-import { GET_CLUES } from './enum';
+import { ANSWER, GET_CLUES } from './enum';
 
 export interface IResClues {
     id: number;
@@ -18,6 +18,7 @@ export interface IResClues {
         updated_at: string;
         clues_count: number;
     };
+    isAnswer: string;
 }
 
 export interface IStateClues {
@@ -32,4 +33,10 @@ export interface IStateClues {
 export interface IDispatchGetClues extends IStateClues {
     type: GET_CLUES.CLUES | GET_CLUES.LOADER_FALSE | GET_CLUES.LOADER_TRUE;
     // clues: IResClues[];
+}
+
+export interface IDispatchAnswer {
+    type: ANSWER.ANSWER;
+    id: number | null;
+    title: string;
 }

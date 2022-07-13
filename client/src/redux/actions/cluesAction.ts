@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
-import { IDispatchGetClues, IResClues } from '../types/types';
-import { GET_CLUES } from '../types/enum';
+import { IDispatchAnswer, IDispatchGetClues, IResClues } from '../types/types';
+import { ANSWER, GET_CLUES } from '../types/enum';
 import { request } from '../../config/service/request';
 
 function filter(arr: IResClues[], title: string) {
@@ -31,4 +31,12 @@ export const getCluesAction = () => async (dispatch: Dispatch<IDispatchGetClues>
         inventionsTopic: [],
         worldsTopic: [],
     });
+};
+
+export const answersAction = (id: number | null, title: string): IDispatchAnswer => {
+    return {
+        type: ANSWER.ANSWER,
+        id,
+        title,
+    };
 };

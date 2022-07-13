@@ -5,4 +5,5 @@ export { default as Input } from './Input/Input';
 export { default as Clues } from './Clues/Clues';
 export { default as Question } from './Question/Question';
 export { default as Timer } from './Timer/Timer';
+export { default as Topics } from './Topics/Topics';
 // export { default as  } from '';
