@@ -1,14 +1,58 @@
 import React from 'react';
 import { useTypeSelector } from '../../config/hooks/useTypeSelector';
-import { Button, Input, Loader } from '../../components';
+import { Button, Clues, Loader, Question } from '../../components';
 import { useAction } from '../../config/hooks/useAction';
+import { useMessage } from '../../config/hooks/useMessage';
 import './game_page.scss';
 
+type questionAnswers = {
+    id: null | number;
+    ball: null | number;
+    answers: null | string;
+    question: null | string;
+};
+
 const GamePage: React.FC = () => {
-    const [ball, setBall] = React.useState<number>(0);
+    const message = useMessage();
     const { getCluesAction } = useAction();
+    const [ball, setBall] = React.useState<number>(0);
+    const [isQuestion, setIsQuestion] = React.useState<boolean>(false);
+    const [questionAnswers, setQuestionAnswers] = React.useState<questionAnswers>({
+        id: null,
+        answers: null,
+        ball: null,
+        question: null,
+    });
     const [isBegin, setIsBegin] = React.useState(true);
-    const { worlds, ac_dc, inventions, state, hard, loader } = useTypeSelector((state) => state.cluesReducer);
+    const { worldsTopic, ac_dcTopic, inventionsTopic, stateTopic, hardTopic, loader } = useTypeSelector(
+        (state) => state.cluesReducer,
+    );
+
+    console.log(questionAnswers);
+
+    const questionTab = (id: number, ball: number, answers: string, question: string) => {
+        setQuestionAnswers({ id, ball, question, answers });
+        setIsQuestion(true);
+    };
+
+    const isAnswer = (is: boolean, answer?: string) => {
+        setIsQuestion(false);
+        if (is) {
+            if (questionAnswers.answers === answer) {
+                message(`Правильный ответ, Вы заработали ${questionAnswers.ball}`, 'success');
+                return setBall((pre) => pre + Number(questionAnswers.ball));
+            }
+            message('Вы неправильно ответили', 'warn');
+            return setBall((pre) => pre - Number(questionAnswers.ball));
+        }
+        message('Вы не успели ответить на вопрос в течение 60 сек!', 'warn');
+        setBall((pre) => pre - Number(questionAnswers.ball));
+    };
+
+    const beginGame = () => {
+        setIsBegin(true);
+    };
+
     React.useEffect(() => {
         getCluesAction();
     }, []);
@@ -16,7 +60,7 @@ const GamePage: React.FC = () => {
     if (!isBegin) {
         return (
             <div className="begin">
-                <Button value="Начать игру" click={setIsBegin.bind(null, true)} />
+                <Button value="Начать игру" click={beginGame} />
             </div>
         );
     }
@@ -24,59 +68,19 @@ const GamePage: React.FC = () => {
     return (
         <>
             {loader && <Loader />}
-            {worlds.length && (
-                <>
-                    <div className="questions">
-                        <div className="questions__item">
-                            <div className="questions__topic">{worlds[0]?.category.title}</div>
-                            {worlds.map((item) => (
-                                <div className="questions__ball" key={item.id}>
-                                    {item.value}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="questions__item">
-                            <div className="questions__topic">{ac_dc[0]?.category.title}</div>
-                            {ac_dc.map((item) => (
-                                <div className="questions__ball" key={item.id}>
-                                    {item.value}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="questions__item">
-                            <div className="questions__topic">{inventions[0]?.category.title}</div>
-                            {inventions.map((item) => (
-                                <div className="questions__ball" key={item.id}>
-                                    {item.value}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="questions__item">
-                            <div className="questions__topic">{state[0]?.category.title}</div>
-                            {state.map((item) => (
-                                <div className="questions__ball" key={item.id}>
-                                    {item.value}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="questions__item">
-                            <div className="questions__topic">{hard[0]?.category.title}</div>
-                            {hard.map((item) => (
-                                <div className="questions__ball" key={item.id}>
-                                    {item.value}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    <Input value={'ds'} change={() => {}} id="answers" name="answers" type="text" />
-                    <div className="count">
-                        <p className="count__value">
-                            Счет: <strong>{ball}</strong>
-                        </p>
-                        <Button value="Завершить игру" click={() => {}} />
-                    </div>
-                </>
-            )}
+            {isQuestion ? (
+                <Question questionAnswers={questionAnswers} ball={ball} isAnswer={isAnswer} />
+            ) : worldsTopic.length ? (
+                <Clues
+                    inventionsTopic={inventionsTopic}
+                    ac_dcTopic={ac_dcTopic}
+                    stateTopic={stateTopic}
+                    worldsTopic={worldsTopic}
+                    hardTopic={hardTopic}
+                    ball={ball}
+                    questionTab={questionTab}
+                />
+            ) : null}
         </>
     );
 };

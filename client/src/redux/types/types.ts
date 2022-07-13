@@ -21,11 +21,11 @@ export interface IResClues {
 }
 
 export interface IStateClues {
-    inventions: IResClues[];
-    ac_dc: IResClues[];
-    state: IResClues[];
-    worlds: IResClues[];
-    hard: IResClues[];
+    inventionsTopic: IResClues[];
+    ac_dcTopic: IResClues[];
+    stateTopic: IResClues[];
+    worldsTopic: IResClues[];
+    hardTopic: IResClues[];
     loader?: boolean;
 }
 

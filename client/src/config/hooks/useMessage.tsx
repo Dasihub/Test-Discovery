@@ -5,7 +5,7 @@ export const useMessage = () => {
     return React.useCallback((text: string, type: 'info' | 'error' | 'success' | 'warn') => {
         toast[type](text, {
             position: 'top-right',
-            autoClose: 3000,
+            autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,

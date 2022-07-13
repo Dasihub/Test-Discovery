@@ -3,11 +3,11 @@ import { IDispatchGetClues, IStateClues } from '../types/types';
 
 const initialState: IStateClues = {
     loader: false,
-    state: [],
-    inventions: [],
-    ac_dc: [],
-    worlds: [],
-    hard: [],
+    stateTopic: [],
+    inventionsTopic: [],
+    ac_dcTopic: [],
+    worldsTopic: [],
+    hardTopic: [],
 };
 
 export const cluesReducer = (state = initialState, action: IDispatchGetClues) => {
@@ -17,11 +17,11 @@ export const cluesReducer = (state = initialState, action: IDispatchGetClues) =>
         case GET_CLUES.CLUES:
             return {
                 ...state,
-                state: action.state,
-                inventions: action.inventions,
-                ac_dc: action.ac_dc,
-                worlds: action.worlds,
-                hard: action.hard,
+                stateTopic: action.stateTopic,
+                inventionsTopic: action.inventionsTopic,
+                ac_dcTopic: action.ac_dcTopic,
+                worldsTopic: action.worldsTopic,
+                hardTopic: action.hardTopic,
             };
         case GET_CLUES.LOADER_FALSE:
             return { ...state, loader: false };

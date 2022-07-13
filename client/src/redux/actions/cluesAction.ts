@@ -8,13 +8,27 @@ function filter(arr: IResClues[], title: string) {
 }
 
 export const getCluesAction = () => async (dispatch: Dispatch<IDispatchGetClues>) => {
-    dispatch({ type: GET_CLUES.LOADER_TRUE, ac_dc: [], state: [], hard: [], inventions: [], worlds: [] });
+    dispatch({
+        type: GET_CLUES.LOADER_TRUE,
+        ac_dcTopic: [],
+        stateTopic: [],
+        hardTopic: [],
+        inventionsTopic: [],
+        worldsTopic: [],
+    });
     const res: IResClues[] = await request('https://jservice.io/api/clues');
-    const inventions = filter(res, 'inventions');
-    const ac_dc = filter(res, '"ac"/"dc"');
-    const state = filter(res, 'u.s. states');
-    const worlds = filter(res, 'ancient worlds');
-    const hard = filter(res, '"hard"');
-    dispatch({ type: GET_CLUES.CLUES, inventions, ac_dc, state, worlds, hard });
-    dispatch({ type: GET_CLUES.LOADER_FALSE, ac_dc: [], state: [], hard: [], inventions: [], worlds: [] });
+    const inventionsTopic = filter(res, 'inventions');
+    const ac_dcTopic = filter(res, '"ac"/"dc"');
+    const stateTopic = filter(res, 'u.s. states');
+    const worldsTopic = filter(res, 'ancient worlds');
+    const hardTopic = filter(res, '"hard"');
+    dispatch({ type: GET_CLUES.CLUES, inventionsTopic, ac_dcTopic, stateTopic, worldsTopic, hardTopic });
+    dispatch({
+        type: GET_CLUES.LOADER_FALSE,
+        ac_dcTopic: [],
+        stateTopic: [],
+        hardTopic: [],
+        inventionsTopic: [],
+        worldsTopic: [],
+    });
 };
