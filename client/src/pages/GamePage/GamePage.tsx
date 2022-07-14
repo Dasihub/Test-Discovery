@@ -3,7 +3,9 @@ import { useTypeSelector } from '../../config/hooks/useTypeSelector';
 import { Button, Clues, Loader, Question } from '../../components';
 import { useAction } from '../../config/hooks/useAction';
 import { useMessage } from '../../config/hooks/useMessage';
+import { useHttp } from '../../config/hooks/useHttp';
 import './game_page.scss';
+import { IMessage } from '../../config/types/types';
 
 interface questionAnswers {
     id: null | number;
@@ -21,9 +23,14 @@ interface answeredTopics {
     answersFalse: number;
 }
 
+interface IRes extends IMessage {
+    data: [];
+}
+
 const GamePage: React.FC = () => {
     const message = useMessage();
-    const { getCluesAction, answersAction } = useAction();
+    const { request, loader } = useHttp();
+    const { getCluesAction, answersAction, clearCluesAction } = useAction();
     const [ball, setBall] = React.useState<number>(0);
     const [isQuestion, setIsQuestion] = React.useState<boolean>(false);
     const [isBegin, setIsBegin] = React.useState(false);
@@ -41,9 +48,14 @@ const GamePage: React.FC = () => {
         question: null,
         type: false,
     });
-    const { worldsTopic, ac_dcTopic, inventionsTopic, stateTopic, hardTopic, loader } = useTypeSelector(
-        (state) => state.cluesReducer,
-    );
+    const {
+        worldsTopic,
+        ac_dcTopic,
+        inventionsTopic,
+        stateTopic,
+        hardTopic,
+        loader: LoaderReducer,
+    } = useTypeSelector((state) => state.cluesReducer);
 
     const questionTab = (id: number, ball: number, answers: string, question: string) => {
         setQuestionAnswers({ id, ball, question, answers, type: false });
@@ -94,21 +106,26 @@ const GamePage: React.FC = () => {
         setBall((pre) => pre - Number(questionAnswers.ball));
     };
 
-    console.log(answeredTopics);
-
     const beginGame = () => {
         setIsBegin(true);
+        getCluesAction();
         setAnsweredTopics({ ...answeredTopics, begin: new Date().toDateString() });
     };
 
-    const endGame = () => {
-        setIsBegin(false);
-        setAnsweredTopics({ ...answeredTopics, end: new Date().toDateString() });
+    const endGame = async (): Promise<void> => {
+        try {
+            clearCluesAction();
+            const res: IRes = await request('/result', 'POST', {
+                begin: answeredTopics.begin,
+                end: new Date().toDateString(),
+                answersTrue: answeredTopics.answersTrue,
+                answersFalse: answeredTopics.answersFalse,
+                count: answeredTopics.count,
+            });
+            message(res.message, res.type);
+            setIsBegin(false);
+        } catch (e) {}
     };
-
-    React.useEffect(() => {
-        getCluesAction();
-    }, []);
 
     if (!isBegin) {
         return (
@@ -120,7 +137,7 @@ const GamePage: React.FC = () => {
 
     return (
         <>
-            {loader && <Loader />}
+            {loader || (LoaderReducer && <Loader />)}
             {isQuestion ? (
                 <Question questionAnswers={questionAnswers} ball={ball} isAnswer={isAnswer} />
             ) : (

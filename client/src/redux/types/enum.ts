@@ -1,7 +1,8 @@
-export enum GET_CLUES {
+export enum CLUES {
     LOADER_TRUE = 'LOADER_TRUE',
     LOADER_FALSE = 'LOADER_FALSE',
-    CLUES = 'CLUES',
+    GET_CLUES = 'CLUES',
+    CLEAR_CLUES = 'CLEAR_CLUES',
 }
 
 export enum ANSWER {

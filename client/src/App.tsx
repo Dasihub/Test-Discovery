@@ -19,12 +19,12 @@ interface IRes extends IMessage {
 const App: React.FC = () => {
     const message = useMessage();
     const { request } = useHttp();
-    const [auth, setAuth] = React.useState<boolean>(false);
+    const [auth, setAuth] = React.useState<boolean>(true);
     const [user, setUser] = React.useState<userTypes>({
         name: '',
         id: null,
     });
-    const [loader, setLoader] = React.useState<boolean>(true);
+    const [loader, setLoader] = React.useState<boolean>(false);
 
     const check = async () => {
         try {
