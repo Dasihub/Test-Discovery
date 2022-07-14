@@ -121,6 +121,7 @@ const GamePage: React.FC = () => {
                 answersTrue: answeredTopics.answersTrue,
                 answersFalse: answeredTopics.answersFalse,
                 count: answeredTopics.count,
+                ball: questionAnswers.ball,
             });
             message(res.message, res.type);
             setIsBegin(false);

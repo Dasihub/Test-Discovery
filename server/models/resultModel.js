@@ -6,6 +6,7 @@ const schema = new Schema({
     answersTrue: { type: Number, required: true },
     answersFalse: { type: Number, required: true },
     count: { type: Number, required: true },
+    ball: { type: Number, required: true },
 });
 
 module.exports = model('result', schema);
