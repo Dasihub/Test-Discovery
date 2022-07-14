@@ -8,3 +8,7 @@ export enum CLUES {
 export enum ANSWER {
     ANSWER = 'ANSWER_TYPE',
 }
+
+// export enum LINK {
+//     DISABLED;
+// };

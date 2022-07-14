@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHttp } from '../../config/hooks/useHttp';
 import { IMessage } from '../../config/types/types';
-import { Loader } from '../../components';
+import { Button, Loader } from '../../components';
 import './result_game_page.scss';
 
 interface IResultState {
@@ -22,11 +22,24 @@ interface IRes extends IMessage {
 const ResultGamePage: React.FC = () => {
     const { request, loader } = useHttp();
     const [result, setResult] = React.useState<IResultState[]>([]);
+    const [noData, setNoData] = React.useState(false);
+
+    const clearResult = async () => {
+        try {
+            await request('/result', 'DELETE');
+            setResult([]);
+            setNoData(true);
+        } catch (e) {}
+    };
 
     const getAllResult = async () => {
         try {
             const res: IRes = await request('/result');
-            setResult(res.data);
+            if (res.data.length) {
+                setResult(res.data);
+                return setNoData(false);
+            }
+            setNoData(true);
         } catch (e) {}
     };
 
@@ -35,15 +48,16 @@ const ResultGamePage: React.FC = () => {
     }, []);
 
     return (
-        <>
+        <div className="result">
             {loader && <Loader />}
-            {result.length ? (
-                <>
-                    <div className="result__head">
-                        <h1 className="result__title">Результаты</h1>
-                    </div>
-                    <div className="result">
-                        <table>
+            <div className="result__head">
+                <h1 className="result__title">Результаты</h1>
+                {result.length ? <Button value="Очистить результат" click={clearResult} loader={loader} /> : null}
+            </div>
+            {!noData ? (
+                result.length ? (
+                    <>
+                        <table className="result__table">
                             <thead>
                                 <tr>
                                     <th>Кол-во вопросов</th>
@@ -67,10 +81,12 @@ const ResultGamePage: React.FC = () => {
                                 ))}
                             </tbody>
                         </table>
-                    </div>
-                </>
-            ) : null}
-        </>
+                    </>
+                ) : null
+            ) : (
+                <h2 style={{ textAlign: 'center' }}>Нет результатов</h2>
+            )}
+        </div>
     );
 };
 

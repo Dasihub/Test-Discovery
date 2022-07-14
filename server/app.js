@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(cookieParser());
 app.use(logger('dev'));
-app.use(cors({ origin: '*' }));
+// app.use(cors({ origin: '*' }));
 
 async function connect() {
     try {
@@ -24,7 +24,6 @@ async function connect() {
         console.log();
     }
 }
-
 connect();
 
 app.use('/api', require('./routes/index'));

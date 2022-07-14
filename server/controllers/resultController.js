@@ -24,7 +24,24 @@ class ResultController {
         try {
             const results = await ResultModel.find();
             res.status(200).json({
-                message: 'Игра окончено!',
+                message: 'Данные получены!',
+                type: 'success',
+                data: results,
+            });
+        } catch (e) {
+            res.status(501).json({
+                message: 'Ошибка в сервере!',
+                type: 'error',
+                data: [],
+            });
+        }
+    }
+
+    async clear(req, res) {
+        try {
+            const results = await ResultModel.deleteMany();
+            res.status(200).json({
+                message: 'Данные удалены!',
                 type: 'success',
                 data: results,
             });

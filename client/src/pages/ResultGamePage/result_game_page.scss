@@ -1,5 +1,46 @@
 .result {
-  border: 2px solid white;
-  padding: 20px 30px;
-  border-radius: 10px;
+  color: white;
+
+  .result__head {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+
+    button {
+      width: 220px;
+    }
+  }
+
+  .result__table {
+    border: 2px solid white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+
+    thead {
+
+      tr {
+        height: 50px;
+        margin: 0 10px;
+
+        th {
+          border-bottom: 2px solid #003b86;
+        }
+      }
+    }
+
+    tbody {
+
+      tr {
+        height: 50px;
+        margin: 20px 10px;
+
+
+        td {
+          border-bottom: 2px dashed white;
+        }
+      }
+    }
+  }
 }

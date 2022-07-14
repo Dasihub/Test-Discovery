@@ -32,7 +32,7 @@ const Navbar: React.FC<IProps> = ({ auth, user, setAuth }) => {
             const res: IRes = await request('/auth/logout');
             message(res.message, res.type);
             if (res.logout) {
-                setAuth(res.logout);
+                setAuth(false);
             }
         } catch (e) {}
     };
@@ -47,12 +47,16 @@ const Navbar: React.FC<IProps> = ({ auth, user, setAuth }) => {
                     </div>
                     <div>Своя игра</div>
                 </div>
-                <div className="navbar__link">
-                    <NavLink to="/game">Играть</NavLink>
-                </div>
-                <div className="navbar__link">
-                    <NavLink to="/result">Результаты</NavLink>
-                </div>
+                {auth && (
+                    <>
+                        <div className="navbar__link">
+                            <NavLink to="/game">Играть</NavLink>
+                        </div>
+                        <div className="navbar__link">
+                            <NavLink to="/result">Результаты</NavLink>
+                        </div>
+                    </>
+                )}
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', alignItems: 'center' }}>
                     {auth && (
                         <>
