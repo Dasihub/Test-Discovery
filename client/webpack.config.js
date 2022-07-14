@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ESLintWebpackPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -28,7 +27,6 @@ module.exports = {
             template: path.resolve(__dirname, 'public/index.html'),
         }),
         new CleanWebpackPlugin(),
-        new ESLintWebpackPlugin(),
     ],
     module: {
         rules: [
