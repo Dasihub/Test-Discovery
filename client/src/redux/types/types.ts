@@ -1,4 +1,4 @@
-import { ANSWER, CLUES } from './enum';
+import { ANSWER, CLUES, IS_LINK } from './enum';
 
 export interface IResClues {
     id: number;
@@ -43,4 +43,8 @@ export interface IDispatchAnswer {
 
 export interface IDispatchClear {
     type: CLUES.CLEAR_CLUES;
+}
+
+export interface IDispatchIsLink {
+    type: IS_LINK.DISABLED | IS_LINK.ACTIVE;
 }

@@ -9,6 +9,7 @@ export enum ANSWER {
     ANSWER = 'ANSWER_TYPE',
 }
 
-// export enum LINK {
-//     DISABLED;
-// };
+export enum IS_LINK {
+    DISABLED = 'DISABLED',
+    ACTIVE = 'ACTIVE',
+}
