@@ -7,7 +7,6 @@ function filter(arr: IResClues[], title: string) {
 }
 
 export const getCluesAction = () => async (dispatch: Dispatch<IDispatchGetClues>) => {
-    console.log('fa');
     dispatch({
         type: CLUES.LOADER_TRUE,
         ac_dcTopic: [],

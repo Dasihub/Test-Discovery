@@ -8,7 +8,6 @@ class AuthController {
         try {
             const { email, password } = req.body;
             const user = await UserModel.findOne({ email });
-            console.log(user);
             if (!user) {
                 return res.status(404).json({
                     message: 'Пользователь не найден!',

@@ -1,11 +1,12 @@
 import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Logo } from '../../img';
 import { useHttp } from '../../config/hooks/useHttp';
 import { useMessage } from '../../config/hooks/useMessage';
 import { Loader } from '../index';
+import { useTypeSelector } from '../../config/hooks/useTypeSelector';
 import { IMessage } from '../../config/types/types';
 import './navbar.scss';
-import { NavLink } from 'react-router-dom';
 
 type userTypes = {
     name: string;
@@ -24,8 +25,10 @@ interface IProps {
 }
 
 const Navbar: React.FC<IProps> = ({ auth, user, setAuth }) => {
+    const navigate = useNavigate();
     const message = useMessage();
     const { request, loader } = useHttp();
+    const { link } = useTypeSelector((state) => state.disabledLinkReducer);
 
     const logout = async () => {
         try {
@@ -35,6 +38,13 @@ const Navbar: React.FC<IProps> = ({ auth, user, setAuth }) => {
                 setAuth(false);
             }
         } catch (e) {}
+    };
+
+    const viewResult = () => {
+        if (link) {
+            return message('Чтобы посмотреть результат вы сперва должны закончить игру!', 'info');
+        }
+        navigate('/result');
     };
 
     return (
@@ -53,7 +63,7 @@ const Navbar: React.FC<IProps> = ({ auth, user, setAuth }) => {
                             <NavLink to="/game">Играть</NavLink>
                         </div>
                         <div className="navbar__link">
-                            <NavLink to="/result">Результаты</NavLink>
+                            <span onClick={viewResult}>Результаты</span>
                         </div>
                     </>
                 )}

@@ -25,6 +25,16 @@
 
   .navbar__link {
 
+    span {
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     a {
       color: white;
       font-size: 18px;

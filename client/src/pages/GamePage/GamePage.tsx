@@ -4,8 +4,8 @@ import { Button, Clues, Loader, Question } from '../../components';
 import { useAction } from '../../config/hooks/useAction';
 import { useMessage } from '../../config/hooks/useMessage';
 import { useHttp } from '../../config/hooks/useHttp';
-import './game_page.scss';
 import { IMessage } from '../../config/types/types';
+import './game_page.scss';
 
 interface questionAnswers {
     id: null | number;
@@ -30,7 +30,7 @@ interface IRes extends IMessage {
 const GamePage: React.FC = () => {
     const message = useMessage();
     const { request, loader } = useHttp();
-    const { getCluesAction, answersAction, clearCluesAction } = useAction();
+    const { getCluesAction, answersAction, clearCluesAction, disabledLinkAction, activeLinkAction } = useAction();
     const [ball, setBall] = React.useState<number>(0);
     const [isQuestion, setIsQuestion] = React.useState<boolean>(false);
     const [isBegin, setIsBegin] = React.useState(false);
@@ -109,24 +109,28 @@ const GamePage: React.FC = () => {
     const beginGame = () => {
         setIsBegin(true);
         getCluesAction();
+        disabledLinkAction();
         setAnsweredTopics({ ...answeredTopics, begin: new Date().toDateString() });
     };
 
     const endGame = async (): Promise<void> => {
         try {
             clearCluesAction();
+            activeLinkAction();
             const res: IRes = await request('/result', 'POST', {
                 begin: answeredTopics.begin,
                 end: new Date().toDateString(),
                 answersTrue: answeredTopics.answersTrue,
                 answersFalse: answeredTopics.answersFalse,
                 count: answeredTopics.count,
-                ball: questionAnswers.ball,
+                ball,
             });
             message(res.message, res.type);
             setIsBegin(false);
         } catch (e) {}
     };
+
+    console.log(questionAnswers);
 
     if (!isBegin) {
         return (
