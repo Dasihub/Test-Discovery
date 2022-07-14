@@ -6,7 +6,7 @@ interface IProps {
     change: (e: React.ChangeEvent<HTMLInputElement>) => void;
     id: string;
     name: string;
-    type: 'text' | 'login' | 'password' | 'radio' | 'checkbox';
+    type: 'text' | 'login' | 'password' | 'radio' | 'checkbox' | 'email';
     placeholder?: string;
     style?: any;
     label?: string;

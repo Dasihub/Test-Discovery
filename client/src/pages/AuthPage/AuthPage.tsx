@@ -3,24 +3,57 @@ import { NavLink } from 'react-router-dom';
 import { Button, Input } from '../../components';
 import { useHttp } from '../../config/hooks/useHttp';
 import { useMessage } from '../../config/hooks/useMessage';
+import { IMessage } from '../../config/types/types';
 import './auth_page.scss';
 
 type formState = {
-    login: string;
+    email: string;
     password: string;
 };
 
-const AuthPage: React.FC = () => {
+interface Res extends IMessage {
+    data: [{ name: string; id: number; email: string }];
+    auth: boolean;
+}
+
+interface IProps {
+    setAuth: (pre: boolean) => void;
+    setUser: (pre: { id: null | number; name: string }) => void;
+}
+
+const AuthPage: React.FC<IProps> = ({ setAuth, setUser }) => {
     const message = useMessage();
     const { request, loader } = useHttp();
     const [form, setForm] = React.useState<formState>({
-        login: '',
+        email: '',
         password: '',
     });
 
     const change = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
+
+    const login = React.useCallback(
+        async (e: React.FormEvent): Promise<void> => {
+            try {
+                e.preventDefault();
+                if (form.email.length && form.password.length) {
+                    const res: Res = await request('/auth/login', 'POST', {
+                        email: form.email,
+                        password: form.password,
+                    });
+                    message(res.message, res.type);
+                    if (res.auth) {
+                        setUser({ id: res.data[0].id, name: res.data[0].name });
+                        return setAuth(true);
+                    }
+                    return;
+                }
+                message('Заполните все поля!', 'warning');
+            } catch (e) {}
+        },
+        [form],
+    );
 
     return (
         <div className="auth">
@@ -29,11 +62,11 @@ const AuthPage: React.FC = () => {
                     <h1>Авторизация</h1>
                     <div>
                         <Input
-                            value={form.login}
+                            value={form.email}
                             change={change}
-                            id="login"
-                            name="login"
-                            type="text"
+                            id="email"
+                            name="email"
+                            type="email"
                             label="Логин"
                             placeholder="Логин"
                         />
@@ -49,7 +82,7 @@ const AuthPage: React.FC = () => {
                             label="Пароль"
                         />
                     </div>
-                    <Button type="submit" value="Войти" click={() => {}} loader={loader} />
+                    <Button type="submit" value="Войти" click={login} loader={loader} />
                     <NavLink to="/register">
                         <p>Регистрация</p>
                     </NavLink>

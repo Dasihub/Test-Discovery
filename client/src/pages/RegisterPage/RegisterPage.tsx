@@ -3,14 +3,20 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Button, Input } from '../../components';
 import { useHttp } from '../../config/hooks/useHttp';
 import { useMessage } from '../../config/hooks/useMessage';
+import { IMessage } from '../../config/types/types';
 import './register_page.scss';
 
 type formState = {
     name: string;
-    login: string;
+    email: string;
     password: string;
     password_2: string;
 };
+
+interface Res extends IMessage {
+    data: formState[];
+    register: boolean;
+}
 
 const RegisterPage: React.FC = () => {
     const message = useMessage();
@@ -18,13 +24,43 @@ const RegisterPage: React.FC = () => {
     const { request, loader } = useHttp();
     const [form, setForm] = React.useState<formState>({
         name: '',
-        login: '',
+        email: '',
         password: '',
         password_2: '',
+    });
+    const [showPassword, setShowPassword] = React.useState<{ password_1: boolean; password_2: boolean }>({
+        password_1: false,
+        password_2: false,
     });
 
     const change = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
+    };
+
+    const register = async (e: React.FormEvent): Promise<void> => {
+        try {
+            e.preventDefault();
+            if (form.name && form.email && form.password && form.password_2) {
+                if (form.password === form.password_2) {
+                    const res: Res = await request('/auth/register', 'POST', {
+                        name: form.name,
+                        email: form.email,
+                        password: form.password,
+                    });
+                    message(res.message, res.type);
+                    if (res.register) {
+                        return navigate('/login');
+                    }
+                    return;
+                }
+                return message('Пароли не похожи!', 'warning');
+            }
+            message('Заполните все поля!', 'warning');
+        } catch (e) {}
+    };
+
+    const changeShowPassword = (password: string, isShow: boolean) => {
+        setShowPassword({ ...showPassword, [password]: isShow });
     };
 
     return (
@@ -45,11 +81,11 @@ const RegisterPage: React.FC = () => {
                     </div>
                     <div>
                         <Input
-                            value={form.login}
+                            value={form.email}
                             change={change}
-                            id="login"
-                            name="login"
-                            type="login"
+                            id="email"
+                            name="email"
+                            type="email"
                             placeholder="Логин"
                             label="Логин"
                         />
@@ -76,7 +112,7 @@ const RegisterPage: React.FC = () => {
                             label="Повторите пароль"
                         />
                     </div>
-                    <Button type="submit" value="Зарегистрироваться" click={() => {}} loader={loader} />
+                    <Button type="submit" value="Зарегистрироваться" click={register} loader={loader} />
                     <NavLink to="/login">
                         <p>Авторизация</p>
                     </NavLink>

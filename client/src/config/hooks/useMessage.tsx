@@ -2,7 +2,7 @@ import React from 'react';
 import { toast } from 'react-toastify';
 
 export const useMessage = () => {
-    return React.useCallback((text: string, type: 'info' | 'error' | 'success' | 'warn') => {
+    return React.useCallback((text: string, type: 'info' | 'error' | 'success' | 'warn' | 'warning') => {
         toast[type](text, {
             position: 'top-right',
             autoClose: 5000,

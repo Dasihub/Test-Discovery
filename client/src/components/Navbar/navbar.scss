@@ -13,8 +13,20 @@
 
   .navbar__user {
     color: white;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
+  }
+
+  .navbar__link {
+
+    a {
+      color: white;
+      font-size: 18px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   .navbar__logo {

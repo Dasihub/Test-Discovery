@@ -1,6 +1,7 @@
 import React from 'react';
-import { basesUrl } from '../url';
 import { useMessage } from './useMessage';
+
+export const basesUrl = window.location.host.includes('localhost') ? 'http://localhost:5000/api' : '/api';
 
 export const useHttp = () => {
     const message = useMessage();
@@ -16,6 +17,7 @@ export const useHttp = () => {
                 }
                 const res: Response = await fetch(basesUrl + url, { method, body, headers });
                 const data = await res.json();
+                setLoader(false);
 
                 return data;
             } catch (e) {

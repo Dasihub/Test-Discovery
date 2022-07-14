@@ -48,7 +48,14 @@ module.exports = {
             },
             {
                 test: /\.(pdf|png|jpg|jpeg)$/,
-                use: ['file-loader'],
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: 'assets/[name].ext',
+                        },
+                    },
+                ],
             },
         ],
     },

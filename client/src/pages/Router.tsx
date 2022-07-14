@@ -7,9 +7,11 @@ import RegisterPage from './RegisterPage/RegisterPage';
 
 interface IProps {
     isAuth: boolean;
+    setAuth: (pre: boolean) => void;
+    setUser: (pre: { id: null | number; name: string }) => void;
 }
 
-const Router: React.FC<IProps> = ({ isAuth }) => {
+const Router: React.FC<IProps> = ({ isAuth, setAuth, setUser }) => {
     if (isAuth) {
         return (
             <Routes>
@@ -26,7 +28,7 @@ const Router: React.FC<IProps> = ({ isAuth }) => {
         <Routes>
             <Route path="/result" element={<Navigate replace to="/login" />} />
             <Route path="/game" element={<Navigate replace to="/login" />} />
-            <Route path="/login" element={<AuthPage />} />
+            <Route path="/login" element={<AuthPage setUser={setUser} setAuth={setAuth} />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/" element={<Navigate replace to="/login" />} />
         </Routes>
